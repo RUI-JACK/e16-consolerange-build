@@ -1,0 +1,23 @@
+name: build E16ConsoleRange.kext
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: SDK
+        run: |
+          xcrun --sdk macosx --show-sdk-path
+          xcrun --sdk macosx --show-sdk-version
+          xcrun clang++ --version
+      - name: Build
+        run: bash build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: E16ConsoleRange-kext
+          path: out/E16ConsoleRange.kext.zip
+          if-no-files-found: error
